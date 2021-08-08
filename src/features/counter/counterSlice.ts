@@ -30,6 +30,13 @@ export const counterSlice = createSlice({
     incrementByAmount: (state, action: PayloadAction<number>) => {
       state.value += action.payload;
     },
+    incrementSaga: (state, action: PayloadAction<number>) => {
+      state.status = 'loading';
+    },
+    incrementSagaSuccessfully: (state, action: PayloadAction<number>) => {
+      state.status = 'idle';
+      state.value += action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -43,7 +50,8 @@ export const counterSlice = createSlice({
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { increment, decrement, incrementByAmount, incrementSaga, incrementSagaSuccessfully } =
+  counterSlice.actions;
 export const selectCount = (state: RootState) => state.counter.value;
 export const incrementIfOdd =
   (amount: number): AppThunk =>
