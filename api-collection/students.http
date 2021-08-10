@@ -3,7 +3,7 @@
 # Students
 
 # @name getAllStudents
-GET {{baseUrl}}/students?_page=1&_limit=10&_sort=mark&_order=asc
+GET {{baseUrl}}/students?_page=1&_limit=10&_sort=mark&_order=desc
 
 ###
 
@@ -32,17 +32,10 @@ Content-Type: application/json
 {
     "name": "Khoi Vuong",
     "age": 20,
-    "mark": 9
+    "mark": 10
 }
 
 ###
 
 # @name removeStudent
-DELETE   {{baseUrl}}/students/94MwaTC
-Content-Type: application/json
-
-{
-    "name": "Khoi Vuong",
-    "age": 20,
-    "mark": 9
-}
+DELETE   {{baseUrl}}/students/b48a14d6-51b1-48f9-bde0-b2b369d53e9f
