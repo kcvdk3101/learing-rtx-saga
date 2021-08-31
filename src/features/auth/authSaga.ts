@@ -1,25 +1,40 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { fork, take } from 'redux-saga/effects';
+import { call, delay, fork, put, take } from 'redux-saga/effects';
 import { authActions, LoginPayload } from './authSlice';
 
 function* handleLogin(payload: LoginPayload) {
-  console.log(payload);
+  try {
+    yield delay(1000);
+    localStorage.setItem('access_token', 'token');
+    yield put(
+      authActions.loginSuccessfully({
+        id: 1,
+        name: 'Khoi Vuong',
+      })
+    );
+  } catch (error) {
+    yield put(authActions.loginFail(error.message));
+  }
 }
 
 function* handleLogout() {
-  console.log('User logout');
+  yield delay(1000);
+  localStorage.removeItem('access_token');
 }
 
 // Watch those handle functions
 function* watchLoginFlow() {
   while (true) {
-    // Login
-    const action: PayloadAction<LoginPayload> = yield take(authActions.login.type);
-    yield fork(handleLogin, action.payload);
+    const isLoggedIn = Boolean(localStorage.getItem('access_token'));
+    if (!isLoggedIn) {
+      // Login
+      const action: PayloadAction<LoginPayload> = yield take(authActions.login.type);
+      yield fork(handleLogin, action.payload);
+    }
 
     // Logout
     yield take(authActions.logout.type);
-    yield fork(handleLogout);
+    yield call(handleLogout);
   }
 }
 
