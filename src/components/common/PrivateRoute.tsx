@@ -1,7 +1,10 @@
 import React from 'react';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
 
-export interface PrivateRouteProps {}
+export const PrivateRoute = (props: RouteProps) => {
+  const isLogin = Boolean(localStorage.getItem('access_token'));
 
-export const PrivateRoute = (props: PrivateRouteProps) => {
-  return <div>Private Route</div>;
+  if (!isLogin) return <Redirect to="/login" />;
+
+  return <Route {...props} />;
 };

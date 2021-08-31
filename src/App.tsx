@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
 import cityApi from 'api/cityApi';
 import studentApi from 'api/studentApi';
+import { PageNotFound, PrivateRoute } from 'components/common';
+import { AdminLayout } from 'components/layout';
+import { LoginPage } from 'features/auth/LoginPage';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -21,9 +22,17 @@ function App() {
   return (
     <div>
       <Switch>
-        <Route path="/login"></Route>
-        <Route path="/admin"></Route>
-        <Route></Route>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
+
+        <PrivateRoute path="/admin">
+          <AdminLayout />
+        </PrivateRoute>
+
+        <Route>
+          <PageNotFound />
+        </Route>
       </Switch>
     </div>
   );
