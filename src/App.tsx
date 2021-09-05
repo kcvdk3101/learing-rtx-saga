@@ -1,12 +1,17 @@
+import { Button } from '@material-ui/core';
 import cityApi from 'api/cityApi';
 import studentApi from 'api/studentApi';
+import { useAppDispatch } from 'app/hooks';
 import { PageNotFound, PrivateRoute } from 'components/common';
 import { AdminLayout } from 'components/layout';
+import { authActions } from 'features/auth/authSlice';
 import { LoginPage } from 'features/auth/LoginPage';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 function App() {
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     cityApi.getAll().then((res) => console.log(res));
     studentApi
@@ -20,19 +25,24 @@ function App() {
   }, []);
 
   return (
-    <Switch>
-      <Route path="/login">
-        <LoginPage />
-      </Route>
+    <>
+      <Button variant="contained" color="primary" onClick={() => dispatch(authActions.logout())}>
+        Logout
+      </Button>
+      <Switch>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
 
-      <PrivateRoute path="/admin">
-        <AdminLayout />
-      </PrivateRoute>
+        <PrivateRoute path="/admin">
+          <AdminLayout />
+        </PrivateRoute>
 
-      <Route>
-        <PageNotFound />
-      </Route>
-    </Switch>
+        <Route>
+          <PageNotFound />
+        </Route>
+      </Switch>
+    </>
   );
 }
 
